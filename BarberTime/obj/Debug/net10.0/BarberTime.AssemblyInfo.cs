@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BarberTime")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2e3e12177c7c8733106d62f9ad407fd49c60ab2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+636dd724993660e733c3642f91c6f4105a2e773c")]
 [assembly: System.Reflection.AssemblyProductAttribute("BarberTime")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BarberTime")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

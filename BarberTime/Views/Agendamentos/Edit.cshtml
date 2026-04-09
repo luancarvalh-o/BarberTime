@@ -1,0 +1,83 @@
+@model BarberTime.Models.Agendamento
+
+@{
+    ViewData["Title"] = "Editar Agendamento";
+}
+
+<div class="form-page">
+    <div class="form-card shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="page-title mb-1">Editar Agendamento ✏️</h1>
+                <p class="text-muted mb-0">Atualize os dados do agendamento.</p>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                Voltar
+            </a>
+        </div>
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="NomeCliente" class="form-label custom-label"></label>
+                    <input asp-for="NomeCliente" class="form-control custom-input" />
+                    <span asp-validation-for="NomeCliente" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Telefone" class="form-label custom-label"></label>
+                    <input asp-for="Telefone" class="form-control custom-input" />
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DataHora" class="form-label custom-label"></label>
+                    <input asp-for="DataHora" type="datetime-local" class="form-control custom-input" />
+                    <span asp-validation-for="DataHora" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ServicoId" class="form-label custom-label"></label>
+                    <select asp-for="ServicoId" asp-items="ViewBag.Servicos" class="form-select custom-input">
+                        <option value="">Selecione um serviço</option>
+                    </select>
+                    <span asp-validation-for="ServicoId" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label custom-label"></label>
+                    <select asp-for="Status" class="form-select custom-input">
+                        <option value="Confirmado">Confirmado</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Concluido">Concluido</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Observacoes" class="form-label custom-label"></label>
+                    <textarea asp-for="Observacoes" class="form-control custom-input custom-textarea"></textarea>
+                    <span asp-validation-for="Observacoes" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                    Salvar Alterações
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

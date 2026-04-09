@@ -12,15 +12,21 @@ public class Agendamento
 
     [Required(ErrorMessage = "O telefone é obrigatório")]
     [StringLength(20)]
-    public string telefone { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "A data e hora são obrigatórios")]
     public DateTime DataHora { get; set; }
 
-    [Required(ErrorMessage = "O serviço é obrigatório")]
-    [StringLength(50)]
-    public string Serviço { get; set; } = string.Empty;
+    [Range(1, int.MaxValue, ErrorMessage = "Selecione um serviço")]
+    [Display(Name = "Serviço")]
+    public int ServicoId { get; set; }
+
+    public Servico? Servico { get; set; }
 
     [StringLength(50)]
-    public string? Observacoes {get; set;}
+    public string? Observacoes { get; set; }
+
+    [Required(ErrorMessage = "O status é obrigatório")]
+    [StringLength(30)]
+    public string Status { get; set; } = "Confirmado";
 }
