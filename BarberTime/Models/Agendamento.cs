@@ -12,14 +12,14 @@ public class Agendamento
 
     [Required(ErrorMessage = "O telefone é obrigatório")]
     [StringLength(20)]
-    public string telefone { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "A data e hora são obrigatórios")]
     public DateTime DataHora { get; set; }
 
     [Required(ErrorMessage = "O serviço é obrigatório")]
     [StringLength(50)]
-    public string Serviço { get; set; } = string.Empty;
+    public string Servico { get; set; } = string.Empty;
 
     [StringLength(50)]
     public string? Observacoes {get; set;}
