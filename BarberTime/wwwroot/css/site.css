@@ -148,3 +148,77 @@
     font-size: 0.85rem;
     color: #6c757d;
 }
+.home-page {
+    padding-top: 10px;
+}
+
+.hero-card {
+    background: linear-gradient(135deg, #ffffff, #f5f5f5);
+    border-radius: 24px;
+    padding: 40px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: #212529;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1f1f1f;
+}
+
+.hero-text {
+    font-size: 1.05rem;
+    color: #555;
+    max-width: 650px;
+}
+
+.hero-icon {
+    font-size: 7rem;
+    background: #212529;
+    color: #fff;
+    width: 160px;
+    height: 160px;
+    line-height: 160px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.dashboard-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+    height: 100%;
+}
+
+.dashboard-label {
+    display: block;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.dashboard-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #212529;
+    margin-bottom: 8px;
+}
+
+.dashboard-text {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #222;
+}

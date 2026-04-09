@@ -1,8 +1,118 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using BarberTime.Models
+@{
+    ViewData["Title"] = "Home";
+    var proximosAgendamentos = ViewBag.ProximosAgendamentos as List<Agendamento>;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-page">
+    <section class="hero-section mb-5">
+        <div class="hero-card shadow-sm">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="hero-badge">Sistema de Gestão para Barbearia</span>
+                    <h1 class="hero-title mt-3">BarberTime 💈</h1>
+                    <p class="hero-text">
+                        Gerencie agendamentos e serviços da sua barbearia com organização,
+                        rapidez e uma interface moderna.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a asp-controller="Agendamentos" asp-action="Index" class="btn btn-dark rounded-pill px-4">
+                            Ver Agendamentos
+                        </a>
+                        <a asp-controller="Servicos" asp-action="Index" class="btn btn-outline-dark rounded-pill px-4">
+                            Ver Serviços
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                    <div class="hero-icon">✂️</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-xl-4">
+                <div class="dashboard-card shadow-sm">
+                    <span class="dashboard-label">Total de Agendamentos</span>
+                    <h2 class="dashboard-value">@ViewBag.TotalAgendamentos</h2>
+                    <p class="dashboard-text">Quantidade total cadastrada no sistema.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-4">
+                <div class="dashboard-card shadow-sm">
+                    <span class="dashboard-label">Serviços Ativos</span>
+                    <h2 class="dashboard-value">@ViewBag.TotalServicosAtivos</h2>
+                    <p class="dashboard-text">Serviços disponíveis para novos agendamentos.</p>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-xl-4">
+                <div class="dashboard-card shadow-sm">
+                    <span class="dashboard-label">Acesso Rápido</span>
+                    <div class="d-flex flex-column gap-2 mt-3">
+                        <a asp-controller="Agendamentos" asp-action="Create" class="btn btn-dark rounded-pill">
+                            + Novo Agendamento
+                        </a>
+                        <a asp-controller="Servicos" asp-action="Create" class="btn btn-outline-dark rounded-pill">
+                            + Novo Serviço
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header mb-3">
+            <h3 class="section-title">Próximos Agendamentos</h3>
+            <p class="text-muted mb-0">Os próximos horários confirmados no sistema.</p>
+        </div>
+
+        @if (proximosAgendamentos != null && proximosAgendamentos.Any())
+        {
+            <div class="row g-4">
+                @foreach (var item in proximosAgendamentos)
+                {
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card agendamento-card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="cliente-nome mb-2">👤 @item.NomeCliente</h5>
+                                <div class="info-item">
+                                    <small class="info-label">Telefone</small>
+                                    <div class="info-value">📞 @item.Telefone</div>
+                                </div>
+                                <div class="info-item">
+                                    <small class="info-label">Data e Hora</small>
+                                    <div class="info-value">📅 @item.DataHora.ToString("dd/MM/yyyy HH:mm")</div>
+                                </div>
+                                <div class="info-item">
+                                    <small class="info-label">Serviço</small>
+                                    <div class="info-value">✂️ @item.Servico?.Nome</div>
+                                </div>
+                                <div class="info-item">
+                                    <small class="info-label">Status</small>
+                                    <div class="info-value">@item.Status</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state text-center py-5">
+                <h4>Nenhum próximo agendamento</h4>
+                <p class="text-muted">Cadastre um novo agendamento para começar.</p>
+                <a asp-controller="Agendamentos" asp-action="Create" class="btn btn-dark rounded-pill px-4">
+                    + Novo Agendamento
+                </a>
+            </div>
+        }
+    </section>
 </div>

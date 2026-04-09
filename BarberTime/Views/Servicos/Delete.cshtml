@@ -1,0 +1,64 @@
+@model BarberTime.Models.Servico
+
+@{
+    ViewData["Title"] = "Excluir Serviço";
+}
+
+<div class="form-page">
+    <div class="form-card shadow-sm delete-card">
+        <div class="mb-4">
+            <h1 class="page-title mb-1">Excluir Serviço 🗑️</h1>
+            <p class="text-muted mb-0">Confirme a exclusão deste serviço.</p>
+        </div>
+
+        <div class="delete-warning mb-4">
+            Tem certeza que deseja excluir este serviço?
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <span class="detail-label">Nome</span>
+                    <strong>@Model.Nome</strong>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="detail-box">
+                    <span class="detail-label">Preço</span>
+                    <strong>R$ @Model.Preco.ToString("N2")</strong>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="detail-box">
+                    <span class="detail-label">Duração</span>
+                    <strong>@Model.DuracaoEmMinutos min</strong>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="detail-box">
+                    <span class="detail-label">Status</span>
+                    <strong>@(Model.Ativo ? "Ativo" : "Inativo")</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <form asp-action="Delete" method="post" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger rounded-pill px-4">
+                    Excluir
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

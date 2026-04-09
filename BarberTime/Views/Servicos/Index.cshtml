@@ -1,0 +1,77 @@
+@model IEnumerable<BarberTime.Models.Servico>
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Serviços";
+}
+
+<div class="agendamento-page">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h1 class="page-title mb-1">Serviços ✂️</h1>
+            <p class="text-muted mb-0">Gerencie os serviços oferecidos pela barbearia.</p>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <a asp-action="Create" class="btn btn-dark rounded-pill px-4 shadow-sm">
+                + Novo Serviço
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            var badgeClass = item.Ativo ? "status-confirmado" : "status-default";
+
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card agendamento-card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="cliente-nome mb-1">✂️ @item.Nome</h5>
+                                <small class="text-muted">Duração: @item.DuracaoEmMinutos min</small>
+                            </div>
+
+                            <span class="status-badge @badgeClass">
+                                @(item.Ativo ? "Ativo" : "Inativo")
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <small class="info-label">Preço</small>
+                            <div class="info-value">R$ @item.Preco.ToString("N2")</div>
+                        </div>
+
+                        <div class="info-item">
+                            <small class="info-label">Duração</small>
+                            <div class="info-value">@item.DuracaoEmMinutos minutos</div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
+                        <div class="d-flex gap-2">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                                Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm w-100 rounded-pill">
+                                Excluir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state text-center py-5">
+            <h4>Nenhum serviço encontrado</h4>
+            <p class="text-muted">Comece criando o primeiro serviço.</p>
+            <a asp-action="Create" class="btn btn-dark rounded-pill px-4">
+                + Novo Serviço
+            </a>
+        </div>
+    }
+</div>

@@ -76,37 +76,38 @@ public class AgendamentosController : Controller
     }
 
     [HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, Agendamento agendamento)
-{
-    if (id != agendamento.Id)
-        return NotFound();
-
-    if (ModelState.IsValid)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Agendamento agendamento)
     {
-        if (!ValidarDataHoraAgendamento(agendamento))
+        if (id != agendamento.Id)
+            return NotFound();
+
+        if (ModelState.IsValid)
         {
-            await CarregarServicosAsync();
-            return View(agendamento);
+            if (!ValidarDataHoraAgendamento(agendamento))
+            {
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
+
+            if (existeConflito)
+            {
+                ModelState.AddModelError("DataHora", "Já existe um agendamento conflitante nesse intervalo de horário.");
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            _context.Update(agendamento);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
-
-        if (existeConflito)
-        {
-            ModelState.AddModelError("DataHora", "Já existe um agendamento conflitante nesse intervalo de horário.");
-            await CarregarServicosAsync();
-            return View(agendamento);
-        }
-
-        _context.Update(agendamento);
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        await CarregarServicosAsync();
+        return View(agendamento);
     }
 
-    await CarregarServicosAsync();
-    return View(agendamento);
-}
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
