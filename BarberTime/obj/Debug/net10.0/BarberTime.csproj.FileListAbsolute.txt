@@ -109,10 +109,7 @@ C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\BarberTime.sourc
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
-C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\bundle\BarberTime.styles.css
-C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\projectbundle\BarberTime.bundle.scp.css
-C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\lyvx76m4eh-{0}-b9sayid5wm-b9sayid5wm.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\qcu5o4cq62-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\p4lj18stzq-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\4gc78r09hd-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -174,8 +171,6 @@ C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\59g2e
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\8f4rea5696-{0}-muycvpuwrr-muycvpuwrr.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\pim9w7rjb8-{0}-87fc7y1x7t-87fc7y1x7t.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\j59qb0w3d1-{0}-mlv21k5csn-mlv21k5csn.gz
-C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\p4ynkhj3h5-{0}-feor99gx4r-feor99gx4r.gz
-C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\qwy6b160lf-{0}-feor99gx4r-feor99gx4r.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\staticwebassets.development.json
@@ -187,3 +182,8 @@ C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\refint\BarberTim
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\BarberTime.pdb
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\BarberTime.genruntimeconfig.cache
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\ref\BarberTime.dll
+C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\projectbundle\BarberTime.bundle.scp.css
+C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\p4ynkhj3h5-{0}-feor99gx4r-feor99gx4r.gz
+C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\qwy6b160lf-{0}-feor99gx4r-feor99gx4r.gz
+C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\lyvx76m4eh-{0}-wgdq0n1811-wgdq0n1811.gz

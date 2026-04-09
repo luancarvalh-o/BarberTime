@@ -1,0 +1,74 @@
+@model BarberTime.Models.Agendamento
+
+@{
+    ViewData["Title"] = "Excluir Agendamento";
+}
+
+<div class="form-page">
+    <div class="form-card shadow-sm delete-card">
+        <div class="mb-4">
+            <h1 class="page-title mb-1">Excluir Agendamento 🗑️</h1>
+            <p class="text-muted mb-0">Confirme a exclusão deste agendamento.</p>
+        </div>
+
+        <div class="delete-warning mb-4">
+            Tem certeza que deseja excluir este agendamento?
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <span class="detail-label">Cliente</span>
+                    <strong>@Model.NomeCliente</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <span class="detail-label">Telefone</span>
+                    <strong>@Model.Telefone</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <span class="detail-label">Data e Hora</span>
+                    <strong>@Model.DataHora.ToString("dd/MM/yyyy HH:mm")</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <span class="detail-label">Serviço</span>
+                    <strong>@Model.Servico</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <span class="detail-label">Status</span>
+                    <strong>@Model.Status</strong>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="detail-box">
+                    <span class="detail-label">Observações</span>
+                    <strong>@(string.IsNullOrWhiteSpace(Model.Observacoes) ? "Sem observações" : Model.Observacoes)</strong>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger rounded-pill px-4">
+                    Excluir
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

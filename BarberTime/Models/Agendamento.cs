@@ -22,5 +22,9 @@ public class Agendamento
     public string Servico { get; set; } = string.Empty;
 
     [StringLength(50)]
-    public string? Observacoes {get; set;}
+    public string? Observacoes { get; set; }
+
+    [Required(ErrorMessage = "O status é obrigatório")]
+    [StringLength(30)]
+    public string Status { get; set; } = "Confirmado";
 }
