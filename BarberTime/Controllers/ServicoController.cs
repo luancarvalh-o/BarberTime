@@ -87,17 +87,31 @@ public class ServicosController : Controller
     }
 
     [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var servico = await _context.Servicos.FindAsync(id);
+
+    if (servico == null)
+        return RedirectToAction(nameof(Index));
+
+    bool servicoEmUso = await _context.Agendamentos
+        .AnyAsync(a => a.ServicoId == id);
+
+    if (servicoEmUso)
     {
-        var servico = await _context.Servicos.FindAsync(id);
+        servico.Ativo = false;
+        _context.Update(servico);
+        await _context.SaveChangesAsync();
 
-        if (servico != null)
-        {
-            _context.Servicos.Remove(servico);
-            await _context.SaveChangesAsync();
-        }
-
+        TempData["Mensagem"] = "O serviço está vinculado a agendamentos e foi inativado em vez de excluído.";
         return RedirectToAction(nameof(Index));
     }
+
+    _context.Servicos.Remove(servico);
+    await _context.SaveChangesAsync();
+
+    TempData["Mensagem"] = "Serviço excluído com sucesso.";
+    return RedirectToAction(nameof(Index));
+}
 }

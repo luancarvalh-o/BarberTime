@@ -186,4 +186,4 @@ C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\Views\
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\scopedcss\projectbundle\BarberTime.bundle.scp.css
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\p4ynkhj3h5-{0}-feor99gx4r-feor99gx4r.gz
 C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\qwy6b160lf-{0}-feor99gx4r-feor99gx4r.gz
-C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\lyvx76m4eh-{0}-ydn08qqggr-ydn08qqggr.gz
+C:\Users\Luan\Documents\BarberTime\BarberTime\obj\Debug\net10.0\compressed\lyvx76m4eh-{0}-hf74csfiki-hf74csfiki.gz
