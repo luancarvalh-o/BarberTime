@@ -1,6 +1,7 @@
 using BarberTime.Data;
 using BarberTime.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BarberTime.Controllers;
@@ -17,42 +18,48 @@ public class AgendamentosController : Controller
     public async Task<IActionResult> Index()
     {
         var agendamentos = await _context.Agendamentos
+            .Include(a => a.Servico)
             .OrderBy(a => a.DataHora)
             .ToListAsync();
 
         return View(agendamentos);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        await CarregarServicosAsync();
         return View();
     }
 
     [HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create(Agendamento agendamento)
-{
-    if (ModelState.IsValid)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Agendamento agendamento)
     {
-        if (!ValidarDataHoraAgendamento(agendamento))
-            return View(agendamento);
-
-        bool horarioJaExiste = await _context.Agendamentos
-            .AnyAsync(a => a.DataHora == agendamento.DataHora);
-
-        if (horarioJaExiste)
+        if (ModelState.IsValid)
         {
-            ModelState.AddModelError("DataHora", "Já existe um agendamento para este horário.");
-            return View(agendamento);
+            if (!ValidarDataHoraAgendamento(agendamento))
+            {
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
+
+            if (existeConflito)
+            {
+                ModelState.AddModelError("DataHora", "Já existe um agendamento conflitante nesse intervalo de horário.");
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            _context.Add(agendamento);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        _context.Add(agendamento);
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        await CarregarServicosAsync();
+        return View(agendamento);
     }
-
-    return View(agendamento);
-}
 
     public async Task<IActionResult> Edit(int? id)
     {
@@ -64,6 +71,7 @@ public async Task<IActionResult> Create(Agendamento agendamento)
         if (agendamento == null)
             return NotFound();
 
+        await CarregarServicosAsync();
         return View(agendamento);
     }
 
@@ -77,14 +85,17 @@ public async Task<IActionResult> Edit(int id, Agendamento agendamento)
     if (ModelState.IsValid)
     {
         if (!ValidarDataHoraAgendamento(agendamento))
-            return View(agendamento);
-
-        bool horarioJaExiste = await _context.Agendamentos
-            .AnyAsync(a => a.DataHora == agendamento.DataHora && a.Id != agendamento.Id);
-
-        if (horarioJaExiste)
         {
-            ModelState.AddModelError("DataHora", "Já existe outro agendamento para este horário.");
+            await CarregarServicosAsync();
+            return View(agendamento);
+        }
+
+        bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
+
+        if (existeConflito)
+        {
+            ModelState.AddModelError("DataHora", "Já existe um agendamento conflitante nesse intervalo de horário.");
+            await CarregarServicosAsync();
             return View(agendamento);
         }
 
@@ -93,15 +104,16 @@ public async Task<IActionResult> Edit(int id, Agendamento agendamento)
         return RedirectToAction(nameof(Index));
     }
 
+    await CarregarServicosAsync();
     return View(agendamento);
 }
-
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
             return NotFound();
 
         var agendamento = await _context.Agendamentos
+            .Include(a => a.Servico)
             .FirstOrDefaultAsync(a => a.Id == id);
 
         if (agendamento == null)
@@ -125,30 +137,77 @@ public async Task<IActionResult> Edit(int id, Agendamento agendamento)
         return RedirectToAction(nameof(Index));
     }
 
+    private async Task CarregarServicosAsync()
+    {
+        var servicos = await _context.Servicos
+            .Where(s => s.Ativo)
+            .OrderBy(s => s.Nome)
+            .ToListAsync();
+
+        ViewBag.Servicos = new SelectList(servicos, "Id", "Nome");
+    }
+
     private bool ValidarDataHoraAgendamento(Agendamento agendamento)
-{
-    if (agendamento.DataHora < DateTime.Now)
     {
-        ModelState.AddModelError("DataHora", "Não é permitido agendar em uma data ou horário passado.");
-        return false;
+        if (agendamento.DataHora < DateTime.Now)
+        {
+            ModelState.AddModelError("DataHora", "Não é permitido agendar em uma data ou horário passado.");
+            return false;
+        }
+
+        if (agendamento.DataHora.DayOfWeek == DayOfWeek.Sunday)
+        {
+            ModelState.AddModelError("DataHora", "A barbearia não funciona aos domingos.");
+            return false;
+        }
+
+        TimeSpan horario = agendamento.DataHora.TimeOfDay;
+        TimeSpan abertura = new TimeSpan(8, 0, 0);
+        TimeSpan fechamento = new TimeSpan(20, 0, 0);
+
+        if (horario < abertura || horario > fechamento)
+        {
+            ModelState.AddModelError("DataHora", "Os agendamentos devem estar entre 08:00 e 20:00.");
+            return false;
+        }
+
+        return true;
     }
 
-    if (agendamento.DataHora.DayOfWeek == DayOfWeek.Sunday)
+    private async Task<bool> ExisteConflitoDeHorarioAsync(Agendamento agendamento)
     {
-        ModelState.AddModelError("DataHora", "A barbearia não funciona aos domingos.");
+        var servicoAtual = await _context.Servicos
+            .FirstOrDefaultAsync(s => s.Id == agendamento.ServicoId);
+
+        if (servicoAtual == null)
+        {
+            ModelState.AddModelError("ServicoId", "Serviço inválido.");
+            return true;
+        }
+
+        var novoInicio = agendamento.DataHora;
+        var novoFim = agendamento.DataHora.AddMinutes(servicoAtual.DuracaoEmMinutos);
+
+        var agendamentosExistentes = await _context.Agendamentos
+            .Include(a => a.Servico)
+            .Where(a => a.Id != agendamento.Id)
+            .ToListAsync();
+
+        foreach (var agendamentoExistente in agendamentosExistentes)
+        {
+            if (agendamentoExistente.Servico == null)
+                continue;
+
+            var inicioExistente = agendamentoExistente.DataHora;
+            var fimExistente = agendamentoExistente.DataHora
+                .AddMinutes(agendamentoExistente.Servico.DuracaoEmMinutos);
+
+            bool temConflito = novoInicio < fimExistente && novoFim > inicioExistente;
+
+            if (temConflito)
+                return true;
+        }
+
         return false;
     }
-
-    TimeSpan horario = agendamento.DataHora.TimeOfDay;
-    TimeSpan abertura = new TimeSpan(8, 0, 0);
-    TimeSpan fechamento = new TimeSpan(20, 0, 0);
-
-    if (horario < abertura || horario > fechamento)
-    {
-        ModelState.AddModelError("DataHora", "Os agendamentos devem estar entre 08:00 e 20:00.");
-        return false;
-    }
-
-    return true;
-}
 }

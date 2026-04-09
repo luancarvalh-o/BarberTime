@@ -11,6 +11,7 @@ public class BarberTimeContext : DbContext
     }
 
     public DbSet<Agendamento> Agendamentos { get; set; }
+    public DbSet<Servico> Servicos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

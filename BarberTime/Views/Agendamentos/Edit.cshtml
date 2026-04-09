@@ -40,9 +40,11 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label asp-for="Servico" class="form-label custom-label"></label>
-                    <input asp-for="Servico" class="form-control custom-input" />
-                    <span asp-validation-for="Servico" class="text-danger"></span>
+                    <label asp-for="ServicoId" class="form-label custom-label"></label>
+                    <select asp-for="ServicoId" asp-items="ViewBag.Servicos" class="form-select custom-input">
+                        <option value="">Selecione um serviço</option>
+                    </select>
+                    <span asp-validation-for="ServicoId" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">

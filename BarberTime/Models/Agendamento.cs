@@ -17,9 +17,11 @@ public class Agendamento
     [Required(ErrorMessage = "A data e hora são obrigatórios")]
     public DateTime DataHora { get; set; }
 
-    [Required(ErrorMessage = "O serviço é obrigatório")]
-    [StringLength(50)]
-    public string Servico { get; set; } = string.Empty;
+    [Range(1, int.MaxValue, ErrorMessage = "Selecione um serviço")]
+    [Display(Name = "Serviço")]
+    public int ServicoId { get; set; }
+
+    public Servico? Servico { get; set; }
 
     [StringLength(50)]
     public string? Observacoes { get; set; }

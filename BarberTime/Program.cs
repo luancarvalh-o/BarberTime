@@ -1,6 +1,8 @@
 using BarberTime.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using BarberTime.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +35,25 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<BarberTimeContext>();
+
+    context.Database.Migrate();
+
+    if (!context.Servicos.Any())
+    {
+        context.Servicos.AddRange(
+            new Servico { Nome = "Corte", Preco = 30, DuracaoEmMinutos = 30, Ativo = true },
+            new Servico { Nome = "Barba", Preco = 20, DuracaoEmMinutos = 20, Ativo = true },
+            new Servico { Nome = "Corte + Barba", Preco = 45, DuracaoEmMinutos = 50, Ativo = true }
+        );
+
+        context.SaveChanges();
+    }
+}
 
 
 app.Run();
