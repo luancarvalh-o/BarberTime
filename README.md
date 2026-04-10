@@ -96,5 +96,4 @@ dotnet run
 
 ---
 
-Desenvolvido por **Luan**
-Projeto criado para prática e portfólio de desenvolvimento back-end / full stack.
+Desenvolvido por **Luan**. Projeto criado para prática e portfólio de desenvolvimento back-end / full stack.
