@@ -6,136 +6,72 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BarberTime.Controllers;
 
-public class AgendamentosController : Controller
+public class PublicoController : Controller
 {
     private readonly BarberTimeContext _context;
 
-    public AgendamentosController(BarberTimeContext context)
+    public PublicoController(BarberTimeContext context)
     {
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        var agendamentos = await _context.Agendamentos
-            .Include(a => a.Servico)
-            .OrderBy(a => a.DataHora)
-            .ToListAsync();
-
-        return View(agendamentos);
-    }
-
-    public async Task<IActionResult> Create()
+    [HttpGet]
+    public async Task<IActionResult> Agendar()
     {
         await CarregarServicosAsync();
+        return View(new Agendamento
+        {
+            DataHora = DateTime.Now.AddHours(1),
+            Status = "Confirmado"
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Agendar(Agendamento agendamento)
+    {
+        agendamento.Status = "Confirmado";
+
+        if (ModelState.IsValid)
+        {
+            if (!ValidarDataHoraAgendamento(agendamento))
+            {
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
+
+            if (existeConflito)
+            {
+                ModelState.AddModelError("DataHora", "Já existe um agendamento nesse intervalo de horário.");
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            var servico = await _context.Servicos
+                .FirstOrDefaultAsync(s => s.Id == agendamento.ServicoId && s.Ativo);
+
+            if (servico == null)
+            {
+                ModelState.AddModelError("ServicoId", "Selecione um serviço válido.");
+                await CarregarServicosAsync();
+                return View(agendamento);
+            }
+
+            _context.Agendamentos.Add(agendamento);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Obrigado));
+        }
+
+        await CarregarServicosAsync();
+        return View(agendamento);
+    }
+
+    public IActionResult Obrigado()
+    {
         return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Agendamento agendamento)
-    {
-        if (ModelState.IsValid)
-        {
-            if (!ValidarDataHoraAgendamento(agendamento))
-            {
-                await CarregarServicosAsync();
-                return View(agendamento);
-            }
-
-            bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
-
-            if (existeConflito)
-            {
-                ModelState.AddModelError("DataHora", "Já existe um agendamento conflitante nesse intervalo de horário.");
-                await CarregarServicosAsync();
-                return View(agendamento);
-            }
-
-            _context.Add(agendamento);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        await CarregarServicosAsync();
-        return View(agendamento);
-    }
-
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-            return NotFound();
-
-        var agendamento = await _context.Agendamentos.FindAsync(id);
-
-        if (agendamento == null)
-            return NotFound();
-
-        await CarregarServicosAsync();
-        return View(agendamento);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Agendamento agendamento)
-    {
-        if (id != agendamento.Id)
-            return NotFound();
-
-        if (ModelState.IsValid)
-        {
-            if (!ValidarDataHoraAgendamento(agendamento))
-            {
-                await CarregarServicosAsync();
-                return View(agendamento);
-            }
-
-            bool existeConflito = await ExisteConflitoDeHorarioAsync(agendamento);
-
-            if (existeConflito)
-            {
-                ModelState.AddModelError("DataHora", "Já existe um agendamento conflitante nesse intervalo de horário.");
-                await CarregarServicosAsync();
-                return View(agendamento);
-            }
-
-            _context.Update(agendamento);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        await CarregarServicosAsync();
-        return View(agendamento);
-    }
-
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-            return NotFound();
-
-        var agendamento = await _context.Agendamentos
-            .Include(a => a.Servico)
-            .FirstOrDefaultAsync(a => a.Id == id);
-
-        if (agendamento == null)
-            return NotFound();
-
-        return View(agendamento);
-    }
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        var agendamento = await _context.Agendamentos.FindAsync(id);
-
-        if (agendamento != null)
-        {
-            _context.Agendamentos.Remove(agendamento);
-            await _context.SaveChangesAsync();
-        }
-
-        return RedirectToAction(nameof(Index));
     }
 
     private async Task CarregarServicosAsync()
@@ -178,7 +114,7 @@ public class AgendamentosController : Controller
     private async Task<bool> ExisteConflitoDeHorarioAsync(Agendamento agendamento)
     {
         var servicoAtual = await _context.Servicos
-            .FirstOrDefaultAsync(s => s.Id == agendamento.ServicoId);
+            .FirstOrDefaultAsync(s => s.Id == agendamento.ServicoId && s.Ativo);
 
         if (servicoAtual == null)
         {
@@ -191,7 +127,6 @@ public class AgendamentosController : Controller
 
         var agendamentosExistentes = await _context.Agendamentos
             .Include(a => a.Servico)
-            .Where(a => a.Id != agendamento.Id)
             .ToListAsync();
 
         foreach (var agendamentoExistente in agendamentosExistentes)

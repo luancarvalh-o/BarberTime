@@ -1,0 +1,87 @@
+@model BarberTime.Models.Agendamento
+
+@{
+    ViewData["Title"] = "Agendar Horário";
+}
+
+<div class="cliente-page">
+    <section class="cliente-hero mb-4">
+        <div class="cliente-hero-card shadow-sm">
+            <span class="hero-badge">Agendamento Online</span>
+            <h1 class="hero-title mt-3">Agende seu horário </h1>
+            <p class="hero-text">
+                Escolha o serviço, informe seus dados e selecione o melhor horário.
+            </p>
+        </div>
+    </section>
+
+    <section class="cliente-form-section">
+        <div class="form-card shadow-sm cliente-form-card">
+            <div class="mb-4">
+                <h2 class="page-title mb-1">Dados do Agendamento</h2>
+                <p class="text-muted mb-0">
+                    Preencha as informações abaixo para confirmar seu horário.
+                </p>
+            </div>
+
+            <form asp-action="Agendar" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="NomeCliente" class="form-label custom-label"></label>
+                        <input asp-for="NomeCliente" class="form-control custom-input" placeholder="Seu nome completo" />
+                        <span asp-validation-for="NomeCliente" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Telefone" class="form-label custom-label"></label>
+                        <input asp-for="Telefone" class="form-control custom-input" placeholder="(00) 00000-0000" />
+                        <span asp-validation-for="Telefone" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="ServicoId" class="form-label custom-label"></label>
+                        <select asp-for="ServicoId" asp-items="ViewBag.Servicos" class="form-select custom-input">
+                            <option value="">Selecione um serviço</option>
+                        </select>
+                        <span asp-validation-for="ServicoId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="DataHora" class="form-label custom-label"></label>
+                        <input asp-for="DataHora"
+                               type="datetime-local"
+                               class="form-control custom-input"
+                               value="@Model.DataHora.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="DataHora" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Observacoes" class="form-label custom-label"></label>
+                        <textarea asp-for="Observacoes"
+                                  class="form-control custom-input custom-textarea"
+                                  placeholder="Ex.: preferência de corte, observações, etc."></textarea>
+                        <span asp-validation-for="Observacoes" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-grid d-md-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-dark rounded-pill px-4 cliente-main-btn">
+                        Confirmar Agendamento
+                    </button>
+
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                        Voltar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

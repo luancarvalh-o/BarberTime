@@ -34,7 +34,10 @@
 
                 <div class="col-md-6">
                     <label asp-for="DataHora" class="form-label custom-label"></label>
-                    <input asp-for="DataHora" type="datetime-local" class="form-control custom-input" />
+                    <input asp-for="DataHora"
+                           type="datetime-local"
+                           class="form-control custom-input"
+                           value="@Model.DataHora.ToString("yyyy-MM-ddTHH:mm")" />
                     <span asp-validation-for="DataHora" class="text-danger"></span>
                 </div>
 

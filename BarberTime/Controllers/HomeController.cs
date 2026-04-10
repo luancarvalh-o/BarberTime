@@ -1,24 +1,32 @@
-using System.Diagnostics;
+using BarberTime.Data;
 using Microsoft.AspNetCore.Mvc;
-using BarberTime.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BarberTime.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private readonly ILogger<HomeController> _logger;
+    private readonly BarberTimeContext _context;
+
+    public HomeController(ILogger<HomeController> logger, BarberTimeContext context)
     {
-        return View();
+        _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Privacy()
+    public async Task<IActionResult> Index()
     {
-        return View();
-    }
+        ViewBag.TotalAgendamentos = await _context.Agendamentos.CountAsync();
+        ViewBag.TotalServicosAtivos = await _context.Servicos.CountAsync(s => s.Ativo);
+        ViewBag.ProximosAgendamentos = await _context.Agendamentos
+            .Include(a => a.Servico)
+            .Where(a => a.DataHora >= DateTime.Now)
+            .OrderBy(a => a.DataHora)
+            .Take(5)
+            .ToListAsync();
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View();
     }
 }
