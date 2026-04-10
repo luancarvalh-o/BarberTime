@@ -64,20 +64,6 @@ Sistema web de agendamento para barbearias desenvolvido com ASP.NET Core MVC, pe
 
 ---
 
-##  Estrutura
-
-BarberTime/
-│
-├── Controllers/
-├── Models/
-├── Views/
-├── Data/
-├── wwwroot/
-│
-└── Program.cs
-
----
-
 ## Para Executar
 
 ### Clone o repositório
