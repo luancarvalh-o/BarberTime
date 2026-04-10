@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Agendamento Confirmado";
+}
+
+<div class="cliente-page">
+    <div class="thankyou-card shadow-sm text-center">
+        <div class="thankyou-icon mb-3"></div>
+        <h1 class="page-title mb-2">Agendamento enviado com sucesso!</h1>
+        <p class="text-muted mb-4">
+            Seu horário foi registrado e já está disponível no painel da barbearia.
+        </p>
+
+        <div class="d-grid d-md-flex justify-content-center gap-2">
+            <a asp-controller="Publico" asp-action="Agendar" class="btn btn-dark rounded-pill px-4">
+                Novo Agendamento
+            </a>
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                Ir para Home
+            </a>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,7 @@
 <div class="agendamento-page">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
-            <h1 class="page-title mb-1">Agendamentos 💈</h1>
+            <h1 class="page-title mb-1">Agendamentos </h1>
             <p class="text-muted mb-0">Gerencie os horários da barbearia.</p>
         </div>
 
@@ -35,9 +35,9 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
-                                <h5 class="cliente-nome mb-1">👤 @item.NomeCliente</h5>
-                                <small class="text-muted d-block">📞 @item.Telefone</small>
-                                <small class="text-muted d-block">✂️ @(item.Servico?.Nome ?? "Sem serviço")</small>
+                                <h5 class="cliente-nome mb-1">@item.NomeCliente</h5>
+                                <small class="text-muted d-block">@item.Telefone</small>
+                                <small class="text-muted d-block">@(item.Servico?.Nome ?? "Sem serviço")</small>
                             </div>
 
                             <span class="status-badge @badgeClass">
@@ -47,22 +47,22 @@
 
                         <div class="info-item">
                             <small class="info-label">Data e Hora</small>
-                            <div class="info-value">📅 @item.DataHora.ToString("dd/MM/yyyy HH:mm")</div>
+                            <div class="info-value"> @item.DataHora.ToString("dd/MM/yyyy HH:mm")</div>
                         </div>
 
                         <div class="info-item">
                             <small class="info-label">Serviço</small>
-                            <div class="info-value">✂️ @item.Servico?.Nome</div>
+                            <div class="info-value"> @item.Servico?.Nome</div>
                         </div>
 
                         <div class="info-item">
                             <small class="info-label">Duração</small>
-                            <div class="info-value">⏱️ @(item.Servico?.DuracaoEmMinutos ?? 0) min</div>
+                            <div class="info-value"> @(item.Servico?.DuracaoEmMinutos ?? 0) min</div>
                         </div>
 
                         <div class="info-item">
                             <small class="info-label">Preço</small>
-                            <div class="info-value">💵 R$ @(item.Servico?.Preco.ToString("N2") ?? "0,00")</div>
+                            <div class="info-value"> R$ @(item.Servico?.Preco.ToString("N2") ?? "0,00")</div>
                         </div>
 
                         <div class="info-item">
