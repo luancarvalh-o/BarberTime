@@ -1,6 +1,6 @@
 # BarberTime
 
-Sistema web de agendamento para barbearias desenvolvido com ASP.NET Core MVC, permitindo gerenciamento completo de agendamentos e serviços, além de uma área pública para clientes realizarem reservas online.
+Sistema web de agendamento para barbearias desenvolvido com ASP.NET Core MVC, permitindo gerenciamento completo de agendamentos e serviços, além de uma área pública para clientes realizarem reservas.
 
 ---
 
@@ -69,7 +69,7 @@ Sistema web de agendamento para barbearias desenvolvido com ASP.NET Core MVC, pe
 ### Clone o repositório
 
 
-git clone https://github.com/SEU-USUARIO/BarberTime.git
+git clone https://github.com/luancarvalh-o/BarberTime.git
 
 
 ### Entrar na pasta do projeto
